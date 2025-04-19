@@ -1,0 +1,11 @@
+.form-container form {
+  display: flex;
+  flex-direction: column;
+
+  & label {
+
+    & input {
+      width: 100%;
+    }
+  }
+}
