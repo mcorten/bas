@@ -11,8 +11,6 @@ class HomeController extends AbstractController
   #[Route('/', name: 'app_home', methods: ['GET'])]
   public function number(): Response
   {
-    $number = 1;
-
-    return $this->render('home.html.twig', [ ]);
+    return $this->render('home.html.twig', []);
   }
 }
