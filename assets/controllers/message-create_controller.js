@@ -27,7 +27,10 @@ export default class extends Controller {
       readMessageForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        $.post('/read', {}, () => {
+        $.post('/message', {
+          recipient: "recipient",
+          text: "text"
+        }, () => {
           alert("Successfully read!");
         });
 

@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class HomeController extends AbstractController
+class MessageController extends AbstractController
 {
-  #[Route('/', name: 'app_home', methods: ['GET'])]
-  public function number(): Response
+  #[Route('/message', name: 'app_message', methods: ['GET'])]
+  public function page(): Response
   {
-    return $this->render('home.html.twig', []);
+    return $this->render('message-create.html.twig', []);
   }
 }
