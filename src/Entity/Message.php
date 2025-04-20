@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
+use App\Shared\Encryptor\Adapter\MessageRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[UniqueEntity('lookup')]
+#[HasLifecycleCallbacks]
 class Message
 {
     #[ORM\Id]
@@ -25,15 +29,15 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $recipient = null;
 
-    #[ORM\Column(type: UuidType::NAME)]
-    private ?Uuid $lookup = null;
-
     // this exists of: one_time or date
     // might be better to migrate it to an enum
     #[ORM\Column(length: 16)]
     private ?string $expiry_mode = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: UuidType::NAME)]
+    private ?Uuid $lookup = null;
+
+    #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $expiry_date = null;
 
     #[ORM\Column]
@@ -113,5 +117,12 @@ class Message
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->lookup =  Uuid::v4();
     }
 }

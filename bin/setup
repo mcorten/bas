@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # setup php environment
+docker compose exec bas-php-fpm php composer.phar install --prefer-dist
 docker compose exec bas-php-fpm php bin/console doctrine:database:create --if-not-exists
 docker compose exec bas-php-fpm php bin/console doctrine:migrations:migrate --no-interaction
 
