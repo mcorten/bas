@@ -123,6 +123,6 @@ class Message
     public function setCreatedAtValue(): void
     {
         $this->created_at = new \DateTimeImmutable();
-        $this->lookup =  Uuid::v4();
+        $this->lookup =  Uuid::v7();
     }
 }
