@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Contract\ExpireMode;
 use App\Entity\Message;
 use App\Shared\Encryptor\Encrypt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,13 +28,13 @@ class MessageRepository extends ServiceEntityRepository
   public function create(
     string $text,
     string $recipient,
-    string $mode // TODO enum
+    ExpireMode $mode
   ): Message
   {
     $message = new Message();
     $message->setText($text);
     $message->setRecipient($recipient);
-    $message->setExpiryMode($mode);
+    $message->setExpiryMode($mode->value);
 
     $this->em->persist($message);
     $this->em->flush();

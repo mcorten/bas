@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Contract\ExpireMode;
 use App\Entity\Message;
 use App\Entity\MessageReadModel;
 use App\Repository\MessageRepository;
@@ -41,7 +42,7 @@ readonly class MessageReadHandler {
       return null;
     }
 
-    if ($message->getExpiryMode() === 'one_time') {
+    if ($message->getExpiryMode() === ExpireMode::READ_ONE_TIME->value) {
       $this->messageRepository->delete($message);
     }
 

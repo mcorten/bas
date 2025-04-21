@@ -10,7 +10,7 @@ use App\Shared\Encryptor\Adapter\EncryptV1Adapter;
 readonly class Encrypt {
 
   /**
-   * @var EncryptAdapterInterface[]
+   * @var EncryptAdapterInterface[] $adapters
    *
    * Used to encrypt / decrypt data
    * Array/multiple adapters, so we can stay backwards compatible if we ever upgrade the algorithm
@@ -19,20 +19,17 @@ readonly class Encrypt {
    *
    * We could also store the encryption algorithm in the database, this way we would not have to brute force decryption
    */
-  private array $adapters;
-
-  public function __construct()
+  public function __construct(private array $adapters)
   {
-    // TODO inject adapters with factory
-    $this->adapters = [
-      new EncryptV1Adapter()
-    ];
   }
 
   public function encrypt(string $data): string {
     return $this->adapters[0]->encrypt($data);
   }
 
+  /**
+   * @throws \Exception
+   */
   public function decrypt(string $encrypted): string {
     $decrypted = "";
     foreach ($this->adapters as $adapter) {
