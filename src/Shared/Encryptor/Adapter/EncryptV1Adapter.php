@@ -9,9 +9,11 @@ use Random\RandomException;
 class EncryptV1Adapter implements EncryptAdapterInterface
 {
 
-  // TODO get key, initializationVector and ciphering from .env
+  // TODO get key and ciphering from .env
   private readonly string $key;
   private readonly string $ciphering;
+
+  private readonly int $cipheringLength;
 
   public function __construct()
   {
@@ -19,6 +21,8 @@ class EncryptV1Adapter implements EncryptAdapterInterface
     // at this moment we use a static encryption key, we could also use parts of the lookup key to make it more dynamic
     $this->key = "UKQ0GhrS3duIyuvjbEDqYWAnkwUPZtiQUblB5dN2VHVqk3xIiT0VRVsXgerpkeu";
     $this->ciphering = "AES-256-CTR";
+
+    $this->cipheringLength = openssl_cipher_iv_length($this->ciphering);;
   }
 
   /**
@@ -26,8 +30,7 @@ class EncryptV1Adapter implements EncryptAdapterInterface
    */
   public function encrypt(string $data): string|bool
   {
-    $iv_length = openssl_cipher_iv_length($this->ciphering);
-    $encryption_iv = random_bytes($iv_length);
+    $encryption_iv = random_bytes($this->cipheringLength);
 
     $encryptedText = openssl_encrypt(
       $data,
@@ -44,13 +47,10 @@ class EncryptV1Adapter implements EncryptAdapterInterface
 
   public function decrypt(string $encrypted): string|bool
   {
-    $iv_length = openssl_cipher_iv_length($this->ciphering);
-
     $textDecoded = base64_decode($encrypted);
 
     // random bytes used during encryption are added to the string. so we remove them here
-    $encryption_iv = substr($textDecoded, 0, $iv_length);
-    $encryptedText = substr($textDecoded, $iv_length);
+    list($encryption_iv, $encryptedText) = $this->stripRandomBytesFromEncryptedString($textDecoded);
 
     return openssl_decrypt(
       $encryptedText,
@@ -59,6 +59,19 @@ class EncryptV1Adapter implements EncryptAdapterInterface
       0,
       $encryption_iv
     );
+  }
+
+  /**
+   * @param string $encrypted
+   * @return string[]
+   *    1st: the random bytes
+   *    2nd: the encrypted text
+   */
+  private function stripRandomBytesFromEncryptedString(string $encrypted): array {
+    $encryptionRandomBytes = substr($encrypted, 0, $this->cipheringLength);
+    $encryptedText = substr($encrypted, $this->cipheringLength);
+
+    return [$encryptionRandomBytes, $encryptedText];
   }
 
 

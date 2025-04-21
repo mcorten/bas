@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Contract\ExpireMode;
 use App\Entity\Message;
 use App\Repository\MessageRepository;
 use App\Shared\Encryptor\Encrypt;
@@ -19,7 +20,7 @@ readonly class MessageCreateHandler {
   public function handle(
     string $text,
     string $recipient,
-    string $mode
+    ExpireMode $mode
   ): Message {
     // Discuss: we could make a text / recipient value object that is always encrypted
     $encryptedText = $this->encrypt->encrypt($text);

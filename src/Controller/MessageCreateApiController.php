@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contract\ExpireMode;
 use App\Handler\MessageCreateHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,8 +37,7 @@ class MessageCreateApiController extends AbstractController
       ], Response::HTTP_BAD_REQUEST);
     }
 
-    // TODO create enum for mode
-    $message = $this->create->handle(text: $text, recipient: $recipient, mode: 'one_time');
+    $message = $this->create->handle(text: $text, recipient: $recipient, mode: ExpireMode::READ_ONE_TIME);
 
     return $this->json([
       'key' => $message->getLookup(),
