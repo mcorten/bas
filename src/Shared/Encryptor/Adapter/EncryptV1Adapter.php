@@ -15,6 +15,8 @@ class EncryptV1Adapter implements EncryptAdapterInterface
 
   public function __construct()
   {
+    // Thought:
+    // at this moment we use a static encryption key, we could also use parts of the lookup key to make it more dynamic
     $this->key = "UKQ0GhrS3duIyuvjbEDqYWAnkwUPZtiQUblB5dN2VHVqk3xIiT0VRVsXgerpkeu";
     $this->ciphering = "AES-256-CTR";
   }

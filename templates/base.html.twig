@@ -13,8 +13,17 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}
+      <div class="navigation" style="display: flex; flex-direction: row; justify-content: center;  column-gap: 10px;">
+        <div>
+          <a href="/message"><button>Create message</button></a>
+        </div>
+        <div>
+          <a href="/message/read"><button>Read message</button></a>
+        </div>
 
-        {% endblock %}
+      </div>
+      <hr>
+      {% block body %}
+      {% endblock %}
     </body>
 </html>

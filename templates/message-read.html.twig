@@ -6,16 +6,16 @@
 {% endblock %}
 
 {% block body %}
-  <div class="form-container" data-controller="message-create">
+  <div class="form-container" data-controller="message-read">
     <form>
       <label>
         <input name="recipient" autocomplete="off" placeholder="Who may receive this message?"/>
       </label>
       <label>
-        <textarea name="text" autocomplete="off" placeholder="Your message"></textarea>
+        <input name="recipient" autocomplete="off" placeholder="Your secret key to access the message"/>
       </label>
       <label>
-        <button type="submit">Create message</button>
+        <button type="submit">Read message</button>
       </label>
     </form>
     <div id="success"></div>

@@ -36,7 +36,9 @@ export default class extends Controller {
           text: textInput.val()
         })
           .done((response) => {
-            this.#setSuccess('Success: ' + recipientInput.val() + ' / ' + response.key);
+            this.#setSuccess('Success: send this to the recipient: <br >'
+              + 'user name: ' + recipientInput.val() + '<br />'
+              + 'secret key: '+ response.key);
           })
           .fail((response) => {
             this.#setError(response.responseJSON.error);
@@ -47,16 +49,16 @@ export default class extends Controller {
     }
 
     #clearForm() {
-      $('#success').text('');
-      $('#error').text('');
+      $('#success').html('');
+      $('#error').html('');
     }
 
   #setError(text) {
-    $('#error').text(text);
+    $('#error').html(text);
   }
 
   #setSuccess(text) {
-    $('#success').text(text);
+    $('#success').html(text);
   }
 
 }

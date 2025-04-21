@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class MessageController extends AbstractController
+class MessageReadPresenterController extends AbstractController
 {
-  #[Route('/message', name: 'app_message', methods: ['GET'])]
+  #[Route('/message/read', name: 'presenter_message_read', methods: ['GET'])]
   public function page(): Response
   {
-    return $this->render('message-create.html.twig', []);
+    return $this->render('message-read.html.twig', []);
   }
 }
