@@ -4,6 +4,10 @@
 2. run: ./bin/setup
 3. open your browser, go to localhost
 
+## Test project
+1. run: docker compose up
+2. run: ./bin/test
+
 ## What is implemented
 - [x] Message
   - [x] text

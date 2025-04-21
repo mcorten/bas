@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# setup php environment
+docker compose exec bas-php-fpm php bin/phpunit
