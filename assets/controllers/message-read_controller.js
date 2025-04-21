@@ -25,24 +25,20 @@ export default class extends Controller {
       const readMessageForm = formCollection[0]
 
       const recipientInput = $(readMessageForm).find('[name="recipient"]');
-      const textInput = $(readMessageForm).find('[name="text"]');
+      const keyInput = $(readMessageForm).find('[name="key"]');
 
       readMessageForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         this.#clearResultForm();
-        $.post('/message/create', {
-          recipient: recipientInput.val(),
-          text: textInput.val()
-        })
+        $.get(`/message/read/${recipientInput.val()}/${keyInput.val()}`)
           .done((response) => {
-            this.#setResultSuccess('Success: send this to the recipient: <br >'
-              + 'user name: ' + recipientInput.val() + '<br />'
-              + 'secret key: '+ response.key);
+            if (response.found === true) {
+              this.#displayMessage(response.text);
+              return;
+            }
 
-            // clear so we can not view the value afterward
-            recipientInput.val('');
-            textInput.val('');
+            this.#setResultError("Message not found!");
           })
           .fail((response) => {
             this.#setResultError(response.responseJSON.error);
@@ -53,15 +49,20 @@ export default class extends Controller {
     }
 
     #clearResultForm() {
-      $('#success').html('');
       $('#error').html('');
+
+      const textArea = $('textarea');
+      textArea.css('display', 'none');
+      textArea.text('');
     }
 
     #setResultError(text) {
       $('#error').html(text);
     }
 
-    #setResultSuccess(text) {
-      $('#success').html(text);
+    #displayMessage(message) {
+      const textArea = $('textarea');
+      textArea.text(message);
+      textArea.css('display', 'inherit');
     }
 }

@@ -1,15 +1,13 @@
 .form-container form {
   display: flex;
   flex-direction: column;
-
-  & label {
-
-    & input {
-      width: 100%;
-    }
-    & textarea {
-      width: 100%;
-      height: 150px;
-    }
+}
+& label {
+  & input {
+    width: 100%;
+  }
+  & textarea {
+    width: 100%;
+    height: 150px;
   }
 }

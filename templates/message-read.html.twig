@@ -12,13 +12,16 @@
         <input name="recipient" autocomplete="off" placeholder="Who may receive this message?"/>
       </label>
       <label>
-        <input name="recipient" autocomplete="off" placeholder="Your secret key to access the message"/>
+        <input name="key" autocomplete="off" placeholder="Your secret key to access the message"/>
       </label>
       <label>
         <button type="submit">Read message</button>
       </label>
     </form>
-    <div id="success"></div>
+    <label>
+      <textarea name="text" disabled style="display: none;"></textarea>
+    </label>
+
     <div id="error"></div>
   </div>
 {% endblock %}

@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Message;
 use App\Shared\Encryptor\Encrypt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -42,6 +43,17 @@ class MessageRepository extends ServiceEntityRepository
 
   public function byLookup(string $lookupId): Message|null
   {
-    return $this->findOneBy(['lookupId' => $lookupId]);
+    try {
+      return $this->findOneBy(['lookup' => $lookupId]);
+    } catch(ConversionException $e) {
+      // happens when the wrong lookup key is given
+      return null;
+    }
+  }
+
+  public function delete(Message $message): void
+  {
+    $this->em->remove($message);
+    $this->em->flush();
   }
 }

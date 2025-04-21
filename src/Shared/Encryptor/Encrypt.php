@@ -46,6 +46,7 @@ readonly class Encrypt {
       return $decrypted;
     }
 
+    // TODO custom exception
     throw new \Exception("No adapter found for decrypting the current string");
   }
 }

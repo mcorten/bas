@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MessageCreatePresenterController extends AbstractController
 {
-  #[Route('/message', name: 'presenter_message_create', methods: ['GET'])]
+  #[Route('/message/create', name: 'presenter_message_create', methods: ['GET'])]
   public function page(): Response
   {
     return $this->render('message-create.html.twig', []);
