@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\feature;
 
 use App\Handler\MessageReadHandler;
+
 use App\Repository\MessageRepository;
-use App\Shared\Encryptor\Adapter\EncryptAdapterInterface;
-use App\Shared\Encryptor\Adapter\EncryptV1Adapter;
 use App\Shared\Encryptor\Encrypt;
 use App\Tests\AutoFixture\EncryptTestAdapter;
 use App\Tests\AutoFixture\MessageAutoFixture;
@@ -43,8 +42,12 @@ class ReadMessageTest extends KernelTestCase {
     );
     $messageRepository = $this->createMock(MessageRepository::class);
     $messageRepository->expects($this->once())
-      ->method('byLookup')
+      ->method('findOneBy')
+      ->with(['lookup' => $message->getLookup()])
       ->will($this->returnValue($message));
+    $messageRepository->expects($this->once())
+      ->method('delete')
+      ->with($message);
     $this->getContainer()->set(MessageRepository::class, $messageRepository);
 
     // When

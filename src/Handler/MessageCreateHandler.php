@@ -6,14 +6,15 @@ namespace App\Handler;
 
 use App\Contract\ExpireMode;
 use App\Entity\Message;
-use App\Repository\MessageRepository;
+use App\persistence\CreateMessage;
+use App\persistence\MessageRepository;
 use App\Shared\Encryptor\Encrypt;
 
 readonly class MessageCreateHandler {
 
   public function __construct(
     private Encrypt $encrypt,
-    private MessageRepository $messageRepository
+    private CreateMessage $createMessage
   ) {
   }
 
@@ -26,7 +27,7 @@ readonly class MessageCreateHandler {
     $encryptedText = $this->encrypt->encrypt($text);
     $encryptedRecipient = $this->encrypt->encrypt($recipient);
 
-    return $this->messageRepository->create(
+    return ($this->createMessage)(
       text: $encryptedText,
       recipient: $encryptedRecipient,
       mode: $mode
