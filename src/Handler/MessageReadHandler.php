@@ -7,14 +7,17 @@ namespace App\Handler;
 use App\Contract\ExpireMode;
 use App\Entity\Message;
 use App\Entity\MessageReadModel;
-use App\Repository\MessageRepository;
+use App\persistence\DeleteMessage;
+use App\persistence\FindMessageByLookupId;
+use App\persistence\MessageRepository;
 use App\Shared\Encryptor\Encrypt;
 
 readonly class MessageReadHandler {
 
   public function __construct(
     private Encrypt $encrypt,
-    private MessageRepository $messageRepository
+    private FindMessageByLookupId $byLookupId,
+    private DeleteMessage $delete,
   ) {
   }
 
@@ -23,7 +26,7 @@ readonly class MessageReadHandler {
     string $token,
   ): MessageReadModel|null {
 
-    $message = $this->messageRepository->byLookup(
+    $message = ($this->byLookupId)(
       lookupId: $token
     );
 
@@ -43,7 +46,7 @@ readonly class MessageReadHandler {
     }
 
     if ($message->getExpiryMode() === ExpireMode::READ_ONE_TIME->value) {
-      $this->messageRepository->delete($message);
+      ($this->delete)($message);
     }
 
     return new MessageReadModel(
